@@ -1,0 +1,35 @@
+150. Evaluate Reverse Polish Notation
+
+//Functional programming style in java
+
+class Solution {
+    public BiFunction<Integer, Integer, Integer> operation(String oper){
+        if(oper.equals("add")) return  (x,y) -> x+y ;
+        else if(oper.equals("mul")) return (x,y) -> x*y ;
+        else if(oper.equals("sub")) return  (x,y) -> x-y ;
+        else return(x,y) -> x/y ;
+    }
+
+    public int evalRPN(String[] t) {
+       int cal ; int num1= 0, num2 =0 ;
+       Stack<Integer> stk = new Stack<>() ;
+
+       for(int i=0; i<t.length; i++){
+           if(!stk.isEmpty() &&
+            (t[i].equals("+") || t[i].equals("-") || t[i].equals("*") || t[i].equals("/") ) ){
+                num2 = stk.pop() ;
+                num1 = stk.pop() ;
+           }
+           if( t[i].equals("+") ) stk.push(operation("add" ).apply(num1, num2)) ;
+
+           else if( t[i].equals("*") ) stk.push(operation("mul").apply(num1, num2)) ;
+           
+           else if( t[i].equals("-") ) stk.push(operation("sub").apply(num1, num2)) ;
+
+           else if( t[i].equals("/") ) stk.push(operation("div").apply(num1, num2)) ;
+           
+           else stk.push(Integer.parseInt(t[i]))  ;
+       }
+       return stk.peek() ;
+    }
+}
